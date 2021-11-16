@@ -1,0 +1,17 @@
+## Interface: 20502
+## Title: |rQuester
+## Notes: 일일퀘스트 진행을 반자동화합니다.
+## Author: 아쿠아타입/오페오리스 - Salt Flats, koKR
+## Version: 0.01
+## SavedVariables: _DB
+
+_Config.lua
+
+Helpers/Console.lua
+Helpers/Macro.lua
+
+Classes/Presets.lua
+Classes/Interfaces.lua
+Classes/Events.lua
+
+Quester.lua
