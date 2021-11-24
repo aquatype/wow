@@ -1,0 +1,16 @@
+## Interface: 20502
+## Title: |rBuffer
+## Notes: 좀더 예쁘고 좀더 실용적인 블리자드 기본 버프 프레임
+## Author: 아쿠아타입/오페오리스 - Salt Flats, koKR
+## Version: 0.02
+## SavedVariables: _DB
+## SavedVariablesPerCharacter: _CDB
+
+_Config.lua
+
+Helpers/Console.lua
+
+Classes/Presets.lua
+Classes/Interfaces.lua
+
+Buffer.lua
