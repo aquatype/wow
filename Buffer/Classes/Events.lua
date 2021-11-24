@@ -25,7 +25,7 @@ function EventFrame:ADDON_LOADED(Addon)
 
 	local _isResetRequested = false
 
-	if not _DB then
+	if not _BufferDB then
 		Console:Debug('DB is empty')
 		_isResetRequested = true
 	elseif Buffer.Config._ForceReset then
@@ -35,16 +35,16 @@ function EventFrame:ADDON_LOADED(Addon)
 
 	if _isResetRequested then
 		Console:Debug('resetting DB')
-		_DB = Buffer.Presets
+		_BufferDB = Buffer.Presets
 	else
 		Console:Debug('updating DB')
 		for entity, data in pairs(Buffer.Presets) do
-			if not _DB[entity] then
-				_DB[entity] = data
+			if not _BufferDB[entity] then
+				_BufferDB[entity] = data
 			else
 				for k, v in pairs(data) do
-					if not _DB[entity][k] then
-						_DB[entity][k] = v
+					if not _BufferDB[entity][k] then
+						_BufferDB[entity][k] = v
 					end
 				end
 			end

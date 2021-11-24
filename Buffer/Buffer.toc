@@ -12,5 +12,6 @@ Helpers/Console.lua
 
 Classes/Presets.lua
 Classes/Interfaces.lua
+Classes/Events.lua
 
 Buffer.lua

@@ -6,7 +6,139 @@ Interfaces = {}
 
 function Interfaces.Initialize(self)
 	Console:Debug('initializing Interfaces')
+	Interfaces:CreateBufferFrame()
 	Interfaces:CreateOptionsFrame()
+end
+
+
+function Interfaces:CreateBufferFrame()
+	-- create highlight frame
+	BufferHighlightFrame = CreateFrame('Frame', 'BufferHighlight', UIParent)
+	BufferHighlightFrame:SetSize(30, 30)
+	BufferHighlightFrame:SetPoint('CENTER', UIParent, 'CENTER', 0, 50)
+
+	-- create consolidated frame
+	BufferConsolidatedFrame = CreateFrame('Frame', 'BufferConsolidated', UIParent)
+	BufferConsolidatedFrame:SetSize(30, 30)
+	BufferConsolidatedFrame:SetPoint('TOPRIGHT', BuffFrame, 'TOPRIGHT', 0, 0)
+
+	-- DEV: debug backdrops
+	local b = {
+		edgeFile = [[Interface\Buttons\WHITE8x8]],
+		edgeSize = 3,
+	}
+	-- BuffFrame:SetBackdrop(b)
+	-- BuffFrame:SetBackdropBorderColor(255, 0, 0)
+	-- TemporaryEnchantFrame:SetBackdrop(b)
+	-- TemporaryEnchantFrame:SetBackdropBorderColor(0, 255, 0)
+	-- BufferHighlightFrame:SetBackdrop(b)
+	-- BufferHighlightFrame:SetBackdropBorderColor(0, 0, 255)
+	-- BufferConsolidatedFrame:SetBackdrop(b)
+	-- BufferConsolidatedFrame:SetBackdropBorderColor(0, 255, 0)
+
+	-- beautify and reposition weapon enchant frame
+	for i = 1, NUM_TEMP_ENCHANT_FRAMES do
+		local name = 'TempEnchant' .. i
+		local button = Interfaces:BeautifyButton(name)
+
+		if button then
+			button:ClearAllPoints()
+
+			if i == 1 then
+				button:SetPoint('TOPRIGHT', BufferConsolidatedFrame, 'TOPRIGHT', 0, 0)  -- or `BuffFrame`
+				-- button.SetPoint = function() end
+			else
+				button:SetPoint('TOPRIGHT', _G['TempEnchant1'], 'TOPLEFT', -Buffer.Config.paddingX, 0)
+			end
+
+			button:SetScript('OnShow', CheckFirstBuffButton)
+			button:SetScript('OnHide', CheckFirstBuffButton)
+		end
+	end
+
+end
+
+
+function Interfaces:BeautifyButton(name)
+	local button = _G[name]
+	if not button or button._IsBeautified then return end
+
+	if name:match('Debuff') then
+		_cfg = Buffer.Config.Debuff
+	elseif name:match('TempEnchant') then
+		_cfg = Buffer.Config.Enchant
+	else
+		_cfg = Buffer.Config.Buff
+	end
+
+	-- set button size and scale
+	button:SetSize(_cfg.size, _cfg.size)
+	button:SetScale(_cfg.scale)
+
+	-- set icon texture coords
+	local icon = _G[name..'Icon']
+	if icon then
+		icon:SetTexCoord(0.04, 0.96, 0.04, 0.96)
+	end
+
+	-- alter duration text position
+	local duration = _G[name..'Duration']
+	if duration then
+		duration:ClearAllPoints()
+		duration:SetPoint('BOTTOM', button, 'BOTTOM', 0, -2)
+		duration:SetFont(_cfg.durationFont, _cfg.durationFontSize, 'THINOUTLINE')
+		duration:SetShadowOffset(0, 0)
+		duration:SetDrawLayer('OVERLAY')
+	end
+
+	-- alter stack count
+	local count = _G[name..'Count']
+	if count then
+		count:ClearAllPoints()
+		count:SetPoint('TOPRIGHT', button)
+		count:SetFont(_cfg.countFont, _cfg.countFontSize, 'THINOUTLINE')
+		count:SetShadowOffset(0, 0)
+		count:SetDrawLayer('OVERLAY')
+	end
+
+	-- alter border
+	local border = _G[name..'Border']
+	if not border then
+		border = button:CreateTexture('$parentOverlay', 'ARTWORK')
+		border:SetParent(button)
+		button.Border = border
+	end
+
+	border:ClearAllPoints()
+	border:SetPoint('TOPRIGHT', button, 1, 1)
+	border:SetPoint('BOTTOMLEFT', button, -1, -1)
+	border:SetTexture(_cfg.borderTexture)
+	border:SetTexCoord(0, 1, 0, 1)
+	border:SetVertexColor(unpack(_cfg.borderColor))
+
+	-- add shadow
+	-- QUESTION: was '$parentBackground' on enchant frame .. any differences?
+	local shadow = button:CreateTexture('$parentShadow', 'BACKGROUND')
+	shadow:SetPoint('TOPRIGHT', border, 3.35, 3.35)
+	shadow:SetPoint('BOTTOMLEFT', border, -3.35, -3.35)
+	shadow:SetTexture(_cfg.shadowTexture)
+	shadow:SetVertexColor(0, 0, 0, 1)
+
+	button._IsBeautified = true
+
+	return button
+end
+
+
+function Interfaces:SetConsolidatedButton(buff, flag)
+	if flag == 1 then
+		_cfg = Buffer.Config.ConsolidatedBuff
+	else
+		_cfg = Buffer.Config.Buff
+	end
+
+	buff.Border:SetTexture(_cfg.borderTexture)
+	buff.Border:SetVertexColor(unpack(_cfg.borderColor))
 end
 
 
