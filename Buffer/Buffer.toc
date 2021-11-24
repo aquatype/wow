@@ -1,7 +1,7 @@
 ## Interface: 20502
 ## Title: |rBuffer
-## Notes: 좀더 예쁘고 좀더 실용적인 블리자드 기본 버프 프레임
-## Author: 아쿠아타입/오페오리스 - Salt Flats, koKR
+## Notes: 기본보다 좀 더 예쁘고 좀 더 실용적인 버프 프레임
+## Author: 아쿠아타입/오페오리스 - Shimmering Flats(KR)
 ## Version: 0.02
 ## SavedVariables: _DB
 ## SavedVariablesPerCharacter: _CDB
